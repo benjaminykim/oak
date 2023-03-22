@@ -1,36 +1,59 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Keypad = ({ number, setState }) => (
-  <Pressable
-    onPress={() => {
-      if (number === "X") {
-        setState((oldarray) => [...oldarray.slice(0, -1)]);
-      } else {
-        setState((oldarray) => [...oldarray, number]);
-      }
+  <View
+    style={{
+      width: 80,
+      height: 80,
+      alignItems: "flex-end",
+      marginHorizontal: 20,
+      marginVertical: 20,
     }}
-    style={{ marginHorizontal: 25, marginVertical: 25 }}
   >
-    <Text
+    <Pressable
+      onPress={() => {
+        if (number === "X") {
+          setState((oldarray) => [...oldarray.slice(0, -1)]);
+        } else {
+          setState((oldarray) => [...oldarray, number]);
+        }
+      }}
       style={{
-        fontSize: 50,
-        fontWeight: "700",
-        alignItems: "flex-start",
+        width: "100%",
+        height: "100%",
+        alignItems: "center",
         justifyContent: "center",
       }}
-    >{`${number}`}</Text>
-  </Pressable>
+    >
+      <Text
+        style={{
+          fontSize: 50,
+          fontWeight: "700",
+        }}
+      >{`${number}`}</Text>
+    </Pressable>
+  </View>
 );
 
 export default function NumericalKeypad() {
   const [display, setDisplay] = useState([]);
+  useEffect(() => {
+    let check = [...display];
+    check.sort();
+    console.log(check);
+    if (check[0] === "." && check[1] === ".") {
+      console.log("it happened!");
+      display.pop();
+    }
+  }, [display]);
+
   return (
     <View style={styles.container}>
       <View>
         <Text>{display.join("")}</Text>
       </View>
-      <View style={{ flexDirection: "column" }}>
+      <View style={{ flexDirection: "column", alignItems: "center" }}>
         <View style={styles.row}>
           <Keypad number={1} setState={setDisplay} />
 
